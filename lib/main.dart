@@ -11,10 +11,12 @@ class RightToPride extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: ChooseUserScreen(),
-      theme: ThemeData.dark().copyWith(
-        appBarTheme: const AppBarTheme(backgroundColor: Colors.black),
-        scaffoldBackgroundColor: Colors.black,
-      ),
+      // theme: ThemeData.dark().copyWith(
+      //   primaryColor: Colors.teal,
+      //   primaryColorDark: Colors.teal,
+      //   appBarTheme: const AppBarTheme(backgroundColor: Colors.black),
+      //   scaffoldBackgroundColor: Colors.black,
+      // ),
     );
   }
 }

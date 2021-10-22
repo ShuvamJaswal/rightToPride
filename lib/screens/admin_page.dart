@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:right_to_pride/providers/admin_provider.dart';
+import 'package:right_to_pride/screens/complaint_detail.dart';
 
 class AdminPage extends StatefulWidget {
   const AdminPage({Key? key}) : super(key: key);
@@ -37,17 +38,55 @@ class _AdminPageViewState extends State<AdminPageView> {
     return Padding(
       padding: EdgeInsets.all(20),
       child: AdminDataP.isFetching
-          ? CircularProgressIndicator()
+          ? Center(child: CircularProgressIndicator())
           : Column(
               children: [
-                TextButton(
-                    onPressed: () {
-                      AdminDataP.fetchComplaintData();
-                    },
-                    child: Text("View Complaints.")),
+                Center(
+                  child: TextButton(
+                      onPressed: () {
+                        AdminDataP.fetchComplaintData();
+                      },
+                      child: Text("Get Complaints")),
+                ),
                 //  if (AdminDataP.complaintsResponse!=null){Text()}
                 //
-                Text(AdminDataP.complaintsResponse)
+                AdminDataP.complaintList.length == 0
+                    ? Text("Refresh The Page")
+                    : ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        primary: false,
+                        shrinkWrap: true,
+                        itemCount: AdminDataP.complaintList.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            trailing: IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ComplaintDetail(
+                                              complaint: AdminDataP
+                                                  .complaintList[index]
+                                                  .complaint,
+                                              userName: AdminDataP
+                                                  .complaintList[index]
+                                                  .userName,
+                                            )));
+                              },
+                              icon: Icon(Icons.navigate_next),
+                            ),
+                            title: Text(
+                              AdminDataP.complaintList[index].complaint,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            subtitle: Text(
+                              "By: ${AdminDataP.complaintList[index].userName}",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          );
+                        })
               ],
             ),
     );

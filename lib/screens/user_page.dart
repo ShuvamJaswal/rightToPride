@@ -40,11 +40,15 @@ class _ComplaintInputState extends State<ComplaintInput> {
         : Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Expanded(
                   child: TextField(
+                    minLines: 2,
+                    maxLines: 4,
+                    keyboardType: TextInputType.multiline,
+                    scrollPhysics: const BouncingScrollPhysics(),
                     controller: complaintText,
                     autofocus: false,
                     decoration: const InputDecoration(
@@ -59,27 +63,59 @@ class _ComplaintInputState extends State<ComplaintInput> {
                 ),
                 Expanded(
                   child: TextField(
+                    cursorColor: Colors.black,
                     controller: userNameText,
                     autofocus: false,
                     decoration: const InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
+                        focusedBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                          borderSide:
+                              const BorderSide(color: Colors.black, width: 2),
                         ),
-                      ),
-                      labelText: "Your Name",
-                    ),
+                        enabledBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                          borderSide:
+                              const BorderSide(color: Colors.black, width: 2),
+                        ),
+                        labelText: "Your Name",
+                        labelStyle: TextStyle(color: Colors.black)),
                   ),
                 ),
-                IconButton(
-                    onPressed: () async {
-                      await userComplaintP.sendComplaintData(
-                          complaintText: complaintText.text,
-                          userName: userNameText.text);
-                      complaintText.text = "";
-                      userNameText.text = "";
-                    },
-                    icon: Icon(Icons.send))
+                SizedBox(
+                  height: 66,
+                  width: 188,
+                  child: TextButton(
+                      style: TextButton.styleFrom(
+                        shape: const RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(25))),
+                        primary: Colors.black,
+                        backgroundColor: Colors.black,
+                        onSurface: Colors.grey,
+                      ),
+
+                      //   shape: const BeveledRectangleBorder(
+                      //       borderRadius: BorderRadius.all(Radius.circular(25))),
+                      //   primary: Colors.black,
+                      //   backgroundColor: Colors.black,
+                      //   onSurface: Colors.grey,
+                      // ),
+                      onPressed: () async {
+                        await userComplaintP.sendComplaintData(
+                            complaintText: complaintText.text,
+                            userName: userNameText.text);
+                        complaintText.text = "";
+                        userNameText.text = "";
+                      },
+                      child: const Text(
+                        "Submit",
+                        style: TextStyle(fontSize: 18, color: Colors.white),
+                      )),
+                )
               ],
             ),
           );

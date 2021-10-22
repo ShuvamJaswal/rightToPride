@@ -17,7 +17,7 @@ class UserProvider with ChangeNotifier {
     _isSendingComplaint = true;
     notifyListeners();
     String sendComplaintUrl =
-        "https://right-to-pride-default-rtdb.firebaseio.com/complaints/${userName}/ComplaintData.json";
+        "https://right-to-pride-default-rtdb.firebaseio.com/complaints.json";
     try {
       final response = await http.post(
         Uri.parse(
