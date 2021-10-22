@@ -1,6 +1,5 @@
-# right_to_pride
-
-A new Flutter project.
+# Right to Pride
+An extensive Flutter based app to protect the rights of LGBTQ community.
 
 ## Getting Started
 
