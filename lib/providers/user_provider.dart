@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:right_to_pride/providers/user_auth_provider.dart';
 
 class UserProvider with ChangeNotifier {
   bool _somethingIsntGood = false;
@@ -12,12 +13,14 @@ class UserProvider with ChangeNotifier {
   }
 
   Future<void> sendComplaintData(
-      {required String userName, required String complaintText}) async {
+      {required String userName,
+      required String complaintText,
+      required token}) async {
     _somethingIsntGood = false;
     _isSendingComplaint = true;
     notifyListeners();
     String sendComplaintUrl =
-        "https://right-to-pride-default-rtdb.firebaseio.com/complaints.json";
+        "https://right-to-pride-default-rtdb.firebaseio.com/complaints.json?auth=$token";
     try {
       final response = await http.post(
         Uri.parse(

@@ -4,8 +4,6 @@ import 'package:right_to_pride/providers/admin_provider.dart';
 import 'package:right_to_pride/screens/complaint_detail.dart';
 
 class AdminPage extends StatefulWidget {
-  const AdminPage({Key? key}) : super(key: key);
-
   @override
   _AdminPageState createState() => _AdminPageState();
 }
@@ -17,15 +15,12 @@ class _AdminPageState extends State<AdminPage> {
       appBar: AppBar(
         title: Text("Admin"),
       ),
-      body: ChangeNotifierProvider<AdminProvider>(
-          create: (_) => AdminProvider(), child: AdminPageView()),
+      body: AdminPageView(),
     );
   }
 }
 
 class AdminPageView extends StatefulWidget {
-  const AdminPageView({Key? key}) : super(key: key);
-
   @override
   _AdminPageViewState createState() => _AdminPageViewState();
 }

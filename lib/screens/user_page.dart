@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:right_to_pride/providers/user_auth_provider.dart';
 import 'package:right_to_pride/providers/user_provider.dart';
 
 class UserPage extends StatefulWidget {
@@ -13,12 +14,10 @@ class _UserPageState extends State<UserPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("User"),
-      ),
-      body: ChangeNotifierProvider<UserProvider>(
-          create: (_) => UserProvider(), child: ComplaintInput()),
-    );
+        appBar: AppBar(
+          title: Text("User"),
+        ),
+        body: ComplaintInput());
   }
 }
 
@@ -35,6 +34,8 @@ class _ComplaintInputState extends State<ComplaintInput> {
   @override
   Widget build(BuildContext context) {
     final userComplaintP = Provider.of<UserProvider>(context);
+    userNameText.text =
+        Provider.of<UserAuthProvider>(context, listen: false).Email;
     return userComplaintP.isSending
         ? Center(child: CircularProgressIndicator())
         : Padding(
@@ -45,41 +46,39 @@ class _ComplaintInputState extends State<ComplaintInput> {
               children: [
                 Expanded(
                   child: TextField(
-                    minLines: 2,
-                    maxLines: 4,
+                    minLines: 4,
+                    maxLines: 6,
                     keyboardType: TextInputType.multiline,
                     scrollPhysics: const BouncingScrollPhysics(),
                     controller: complaintText,
                     autofocus: false,
                     decoration: const InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                          borderSide: BorderSide(color: Colors.black, width: 2),
                         ),
-                      ),
-                      labelText: "Type Your Complaint.",
-                    ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                          borderSide: BorderSide(color: Colors.black, width: 2),
+                        ),
+                        labelText: "Type Your Complaint.",
+                        labelStyle: TextStyle(color: Colors.black)),
                   ),
                 ),
                 Expanded(
                   child: TextField(
-                    cursorColor: Colors.black,
+                    enabled: false,
                     controller: userNameText,
-                    autofocus: false,
                     decoration: const InputDecoration(
-                        focusedBorder: const OutlineInputBorder(
+                        disabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(
                             Radius.circular(20),
                           ),
-                          borderSide:
-                              const BorderSide(color: Colors.black, width: 2),
-                        ),
-                        enabledBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(20),
-                          ),
-                          borderSide:
-                              const BorderSide(color: Colors.black, width: 2),
+                          borderSide: BorderSide(color: Colors.black, width: 2),
                         ),
                         labelText: "Your Name",
                         labelStyle: TextStyle(color: Colors.black)),
@@ -106,6 +105,9 @@ class _ComplaintInputState extends State<ComplaintInput> {
                       // ),
                       onPressed: () async {
                         await userComplaintP.sendComplaintData(
+                            token: Provider.of<UserAuthProvider>(context,
+                                    listen: false)
+                                .token,
                             complaintText: complaintText.text,
                             userName: userNameText.text);
                         complaintText.text = "";

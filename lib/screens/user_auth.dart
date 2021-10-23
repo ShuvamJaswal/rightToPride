@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:right_to_pride/providers/user_auth_provider.dart';
 import 'package:right_to_pride/screens/admin_page.dart';
 import 'package:right_to_pride/screens/user_page.dart';
 
@@ -20,24 +24,55 @@ class _UserAuthState extends State<UserAuth> {
   };
   var _isLoading = false;
   final _passwordController = TextEditingController();
+  final _emailController = TextEditingController();
+  Future<void> _submit() async {
+    _authData['email'] = _emailController.text;
+    _authData['password'] = _passwordController.text;
 
-  void _submit() {
-    if (!_formKey.currentState!.validate()) {
-      // Invalid!
-      return;
-    }
-    _formKey.currentState!.save();
     setState(() {
       _isLoading = true;
     });
-    if (_authMode == AuthMode.Login) {
-      // Log user in
-    } else {
-      // Sign user up
+    try {
+      if (_authMode == AuthMode.Login) {
+        // Log user in
+
+        await Provider.of<UserAuthProvider>(context, listen: false)
+            .logIn(_authData['email']!, _authData['password']!);
+      } else {
+        // Sign user up
+
+        await Provider.of<UserAuthProvider>(context, listen: false)
+            .signUp(_authData['email']!, _authData['password']!);
+      }
+    } on HttpException catch (error) {
+      var errorMessage = error.toString();
+      _showErrorDialog(errorMessage);
+    } catch (error) {
+      var errorMessage = "Something went wrong";
+      _showErrorDialog(errorMessage);
     }
+
     setState(() {
       _isLoading = false;
     });
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('An Error Occurred!'),
+        content: Text(message),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Okay'),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          )
+        ],
+      ),
+    );
   }
 
   void _switchAuthMode() {
@@ -80,15 +115,12 @@ class _UserAuthState extends State<UserAuth> {
                     //),
                     labelText: "Email",
                   ),
+                  controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
-                    if (value!.isEmpty || !value.contains('@')) {
-                      return 'Invalid email!';
+                    if (value!.isEmpty || value.length < 5) {
+                      return 'Password is too short!';
                     }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    _authData['email'] = value!;
                   },
                 ),
                 TextFormField(
@@ -100,30 +132,24 @@ class _UserAuthState extends State<UserAuth> {
                       return 'Password is too short!';
                     }
                   },
-                  onSaved: (value) {
-                    _authData['password'] = value!;
-                  },
                 ),
-                if (_authMode == AuthMode.Signup)
-                  TextFormField(
-                    enabled: _authMode == AuthMode.Signup,
-                    decoration: InputDecoration(labelText: 'Confirm Password'),
-                    obscureText: true,
-                    validator: _authMode == AuthMode.Signup
-                        ? (value) {
-                            if (value != _passwordController.text) {
-                              return 'Passwords do not match!';
-                            }
-                          }
-                        : null,
-                  ),
                 if (_isLoading)
                   CircularProgressIndicator()
                 else
                   TextButton(
                     child:
                         Text(_authMode == AuthMode.Login ? 'LOGIN' : 'SIGN UP'),
-                    onPressed: _submit,
+                    onPressed: () async {
+                      await _submit();
+
+                      (Provider.of<UserAuthProvider>(context, listen: false)
+                              .loggedIn)
+                          ? Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => UserPage()))
+                          : _switchAuthMode;
+                    },
                   ),
                 TextButton(
                   child: Text(
