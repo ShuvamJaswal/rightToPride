@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:right_to_pride/providers/admin_provider.dart';
 import 'package:right_to_pride/providers/user_auth_provider.dart';
 import 'package:right_to_pride/providers/user_provider.dart';
-import 'screens/choose_user_screen.dart';
+import 'package:right_to_pride/screens/intro/intro_page.dart';
 
 void main() {
   runApp(const RightToPride());
@@ -21,16 +21,9 @@ class RightToPride extends StatelessWidget {
           value: UserAuthProvider(),
         )
       ],
-      child: MaterialApp(
-        home: ChooseUserScreen(),
-        // theme: ThemeData.dark().copyWith(
-        //   primaryColor: Colors.teal,
-        //   primaryColorDark: Colors.teal,
-        //   appBarTheme: const AppBarTheme(backgroundColor: Colors.black),
-        //   scaffoldBackgroundColor: Colors.black,
-        // ),
+      child: const MaterialApp(
+        home: IntroPage(),
       ),
     );
-    ;
   }
 }

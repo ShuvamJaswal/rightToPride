@@ -17,21 +17,21 @@ class ComplaintDetail extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Expanded(
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                  clipBehavior: Clip.antiAlias,
-                  elevation: 40,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SingleChildScrollView(
-                      child: Text(
-                        complaint,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 30,
-                        ),
+              Card(
+                color: Colors.blue[300],
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
+                clipBehavior: Clip.antiAlias,
+                elevation: 40,
+                child: Padding(
+                  padding: const EdgeInsets.all(40.0),
+                  child: SingleChildScrollView(
+                    child: Text(
+                      complaint,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 30,
                       ),
                     ),
                   ),

@@ -12,6 +12,10 @@ class UserProvider with ChangeNotifier {
     return _isSendingComplaint;
   }
 
+  bool get isSuccess {
+    return _somethingIsntGood;
+  }
+
   Future<void> sendComplaintData(
       {required String userName,
       required String complaintText,
@@ -31,6 +35,8 @@ class UserProvider with ChangeNotifier {
           'UserName': userName,
         }),
       );
+      _somethingIsntGood = false;
+      notifyListeners();
     } catch (error) {
       _somethingIsntGood = true; //to show error dialog.
       notifyListeners();

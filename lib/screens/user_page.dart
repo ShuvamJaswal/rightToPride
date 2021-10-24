@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_launcher_icons/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:right_to_pride/providers/user_auth_provider.dart';
 import 'package:right_to_pride/providers/user_provider.dart';
+import 'package:right_to_pride/screens/complaint_done.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({Key? key}) : super(key: key);
@@ -104,14 +106,39 @@ class _ComplaintInputState extends State<ComplaintInput> {
                       //   onSurface: Colors.grey,
                       // ),
                       onPressed: () async {
-                        await userComplaintP.sendComplaintData(
-                            token: Provider.of<UserAuthProvider>(context,
-                                    listen: false)
-                                .token,
-                            complaintText: complaintText.text,
-                            userName: userNameText.text);
-                        complaintText.text = "";
-                        userNameText.text = "";
+                        if (complaintText.text != "" &&
+                            userNameText.text != "") {
+                          await userComplaintP.sendComplaintData(
+                              token: Provider.of<UserAuthProvider>(context,
+                                      listen: false)
+                                  .token,
+                              complaintText: complaintText.text,
+                              userName: userNameText.text);
+
+                          complaintText.text = "";
+                          userNameText.text = "";
+                          printStatus(userComplaintP.isSuccess.toString());
+                          !(userComplaintP.isSuccess)
+                              ? Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ComplaintDonePage()))
+                              : showDialog(
+                                  context: context,
+                                  builder: (ctx) => AlertDialog(
+                                        title: Text('An Error Occurred!'),
+                                        content: Text("There's Some Problem."),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: Text('Okay'),
+                                            onPressed: () {
+                                              Navigator.of(ctx).pop();
+                                            },
+                                          )
+                                        ],
+                                      ));
+                        }
                       },
                       child: const Text(
                         "Submit",

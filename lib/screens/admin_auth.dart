@@ -3,7 +3,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:right_to_pride/providers/admin_provider.dart';
-import 'package:right_to_pride/providers/api_key.dart';
+import '../providers/api_key.dart';
+
 import 'package:right_to_pride/screens/admin_page.dart';
 
 class AdminAuth extends StatefulWidget {
