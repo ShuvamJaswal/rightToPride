@@ -28,7 +28,7 @@ class UserAuthProvider with ChangeNotifier {
             'returnSecureToken': true,
           }));
       final responseData = json.decode(response.body);
-      print(response.body);
+
       if (responseData['error'] != null) {
         throw HttpException(responseData['error']['message']);
       } else {

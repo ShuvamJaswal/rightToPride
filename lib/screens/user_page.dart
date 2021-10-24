@@ -117,7 +117,7 @@ class _ComplaintInputState extends State<ComplaintInput> {
 
                           complaintText.text = "";
                           userNameText.text = "";
-                          printStatus(userComplaintP.isSuccess.toString());
+
                           !(userComplaintP.isSuccess)
                               ? Navigator.push(
                                   context,

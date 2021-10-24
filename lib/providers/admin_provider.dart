@@ -48,7 +48,6 @@ class AdminProvider with ChangeNotifier {
     _somethingIsntGood = false;
     _isFetchingComplaint = true;
     notifyListeners();
-    print(token);
     String fetchComplaintUrl =
         "https://right-to-pride-default-rtdb.firebaseio.com/complaints.json?auth=$token";
     try {

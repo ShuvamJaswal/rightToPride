@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:right_to_pride/screens/choose_user_screen.dart';
 import 'package:right_to_pride/screens/user_page.dart';
@@ -46,9 +48,10 @@ class ComplaintDoneUi extends StatelessWidget {
             child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            quotes[0],
+            quotes[Random().nextInt(quotes.length)],
+            textAlign: TextAlign.center,
             style: TextStyle(
-                fontStyle: FontStyle.italic, fontSize: 40, color: Colors.blue),
+                fontStyle: FontStyle.italic, fontSize: 30, color: Colors.blue),
           ),
         )),
         TextButton(
